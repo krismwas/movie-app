@@ -57,9 +57,15 @@ export default function App() {
   const [watched, setWatched] = useState([]);
 
   useEffect(function () {
-    fetch(`http://www.omdbapi.com/?apikey=${KEY}&s=inception`)
-      .then((res) => res.json())
-      .then((data) => setMovies(data.Search));
+    async function fetchMovies() {
+      const res = await fetch(
+        `http://www.omdbapi.com/?apikey=${KEY}&s=inception`
+      );
+      const data = await res.json();
+
+      setMovies(data.Search);
+    }
+    fetchMovies();
   }, []);
 
   return (
@@ -175,7 +181,8 @@ function MovieList({ movies }) {
 function Movie({ movie }) {
   return (
     <li>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />${KEY}
+      <img src={movie.Poster} alt={`${movie.Title} poster`} />
+      {/* <img src={movie.Poster} alt={`${movie.Title} poster`} />${KEY} */}
       <h3>{movie.Title}</h3>
       <div>
         <p>
